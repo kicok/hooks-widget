@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Search = () => {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState('programming');
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     const search = async () => {
-      //const url =
-      //  'en.wikipedia.org/w/api.php?action=query&list=search&format=json&origin=*&search=programming';
       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           action: 'query',
@@ -29,9 +27,18 @@ const Search = () => {
   const renderedResults = results.map((result) => {
     return (
       <div className="item" key={result.pageid}>
+        <div className="right floated content">
+          <a
+            className="ui button"
+            target="_blank"
+            href={`https://en.wikipedia.org?curid=${result.pageid}`}
+          >
+            Go
+          </a>
+        </div>
         <div className="content">
           <div className="header">{result.title}</div>
-          {result.snippet}
+          <span dangerouslySetInnerHTML={{ __html: result.snippet }}></span>
         </div>
       </div>
     );
