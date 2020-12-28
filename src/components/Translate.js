@@ -21,9 +21,6 @@ const options = [
   },
 ];
 
-//https://translation.googleapis.com/language/translate/v2
-//AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM
-//
 const Translate = () => {
   const [language, setLanguage] = useState(options[0]);
   const [text, setText] = useState('');
