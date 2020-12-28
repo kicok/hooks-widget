@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Dropdown = ({ options, selected, onSelectedChange }) => {
   const [open, setOpen] = useState(false);
+  const ref = useRef();
 
   useEffect(() => {
     document.body.addEventListener(
       'click',
       (event) => {
-        console.log(event.target);
+        //console.log(event.target);
+        if (ref.current && ref.current.contains(event.target)) {
+          // 클릭 focus가 이벤트의 target애 있을때면 아무것도 실행하지 않고 return
+          // 클릭 focus가 이벤트의 target안에 있다는건 Dropdown 컴포턴트가 clicked 된것이므로 Dropdown내의 onClick 이벤트가 실행되어 setOpen(!open) 가 실행된다.
+          console.log('contains');
+
+          return;
+        }
         console.log('Body Click');
+
+        // 클릭 focus가 이벤트의 target을 벗어난 상태면 무조건 open 을 해제하여 close 시킨다.
         setOpen(false);
       },
       { capture: true }
@@ -32,8 +42,9 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
       </div>
     );
   });
+
   return (
-    <div className="ui form">
+    <div ref={ref} className="ui form">
       <div className="field">
         <label className="label">Select a Color</label>
         <div
