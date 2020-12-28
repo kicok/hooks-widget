@@ -40,7 +40,6 @@ const Search = () => {
         <div className="right floated content">
           <a
             className="ui button"
-            target="_blank"
             href={`https://en.wikipedia.org?curid=${result.pageid}`}
           >
             Go
