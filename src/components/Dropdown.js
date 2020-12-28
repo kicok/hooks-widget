@@ -5,24 +5,26 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
   const ref = useRef();
 
   useEffect(() => {
-    document.body.addEventListener(
-      'click',
-      (event) => {
-        //console.log(event.target);
-        if (ref.current && ref.current.contains(event.target)) {
-          // 클릭 focus가 이벤트의 target애 있을때면 아무것도 실행하지 않고 return
-          // 클릭 focus가 이벤트의 target안에 있다는건 Dropdown 컴포턴트가 clicked 된것이므로 Dropdown내의 onClick 이벤트가 실행되어 setOpen(!open) 가 실행된다.
-          console.log('contains');
+    const onBodyClick = (event) => {
+      //console.log(event.target);
+      if (ref.current && ref.current.contains(event.target)) {
+        // 클릭 focus가 이벤트의 target애 있을때면 아무것도 실행하지 않고 return
+        // 클릭 focus가 이벤트의 target안에 있다는건 Dropdown 컴포턴트가 clicked 된것이므로 Dropdown내의 onClick 이벤트가 실행되어 setOpen(!open) 가 실행된다.
+        console.log('contains');
 
-          return;
-        }
-        console.log('Body Click');
+        return;
+      }
+      console.log('Body Click');
 
-        // 클릭 focus가 이벤트의 target을 벗어난 상태면 무조건 open 을 해제하여 close 시킨다.
-        setOpen(false);
-      },
-      { capture: true }
-    );
+      // 클릭 focus가 이벤트의 target을 벗어난 상태면 무조건 open 을 해제하여 close 시킨다.
+      setOpen(false);
+    };
+    document.body.addEventListener('click', onBodyClick, { capture: true });
+
+    return () => {
+      console.log('remove');
+      document.body.removeEventListener('click', onBodyClick);
+    };
   }, []);
   const renderedOptions = options.map((option) => {
     const active = selected === option ? 'active' : '';
